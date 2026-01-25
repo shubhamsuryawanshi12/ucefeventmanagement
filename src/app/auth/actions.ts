@@ -47,7 +47,13 @@ export async function signup(prevState: unknown, formData: FormData) {
     const email = formData.get('email') as string
     const password = formData.get('password') as string
     const fullName = formData.get('fullName') as string
-    const role = formData.get('role') as UserRole
+    const role = formData.get('role') as string
+
+    // Safe casting
+    let safeRole: UserRole = 'student'
+    if (role === 'organizer' || role === 'admin') {
+        safeRole = role
+    }
 
     const { error } = await supabase.auth.signUp({
         email,
@@ -55,7 +61,7 @@ export async function signup(prevState: unknown, formData: FormData) {
         options: {
             data: {
                 full_name: fullName,
-                role: role,
+                role: safeRole,
             },
         },
     })

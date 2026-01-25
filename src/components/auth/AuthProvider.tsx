@@ -39,13 +39,35 @@ export default function AuthProvider({
             setUser(user)
 
             if (user) {
-                const { data } = await supabase
+                const { data, error } = await supabase
                     .from('profiles')
                     .select('*')
                     .eq('id', user.id)
                     .single()
 
-                setProfile(data)
+                if (error || !data) {
+                    console.log('Profile missing, attempting fallback creation...')
+                    // Fallback: Create profile if missing (Self-healing)
+                    const { data: newProfile, error: createError } = await supabase
+                        .from('profiles')
+                        .insert({
+                            id: user.id,
+                            email: user.email!,
+                            full_name: user.user_metadata.full_name || user.email,
+                            role: user.user_metadata.role || 'student'
+                        })
+                        .select()
+                        .single()
+
+                    if (newProfile) {
+                        console.log('Profile auto-created via fallback')
+                        setProfile(newProfile)
+                    } else {
+                        console.error('Fallback creation failed:', createError)
+                    }
+                } else {
+                    setProfile(data)
+                }
             }
 
             setLoading(false)

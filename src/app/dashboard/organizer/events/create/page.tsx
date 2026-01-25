@@ -34,7 +34,7 @@ export default function CreateEventPage() {
                                 name="title"
                                 id="title"
                                 required
-                                className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"
+                                className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border text-gray-900"
                             />
                         </div>
                     </div>
@@ -48,7 +48,7 @@ export default function CreateEventPage() {
                             <select
                                 id="event_type"
                                 name="event_type"
-                                className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"
+                                className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border text-gray-900"
                             >
                                 <option value="workshop">Workshop</option>
                                 <option value="hackathon">Hackathon</option>
@@ -70,7 +70,7 @@ export default function CreateEventPage() {
                             <select
                                 id="attendance_method"
                                 name="attendance_method"
-                                className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"
+                                className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border text-gray-900"
                             >
                                 <option value="qr">QR Code Scan</option>
                                 <option value="manual">Manual Check-in</option>
@@ -90,7 +90,7 @@ export default function CreateEventPage() {
                                 name="start_date"
                                 id="start_date"
                                 required
-                                className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"
+                                className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border text-gray-900"
                             />
                         </div>
                     </div>
@@ -105,7 +105,7 @@ export default function CreateEventPage() {
                                 name="end_date"
                                 id="end_date"
                                 required
-                                className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"
+                                className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border text-gray-900"
                             />
                         </div>
                     </div>
@@ -120,7 +120,7 @@ export default function CreateEventPage() {
                                 type="text"
                                 name="venue"
                                 id="venue"
-                                className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"
+                                className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border text-gray-900"
                             />
                         </div>
                     </div>
@@ -135,7 +135,7 @@ export default function CreateEventPage() {
                                 type="number"
                                 name="capacity"
                                 id="capacity"
-                                className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"
+                                className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border text-gray-900"
                             />
                         </div>
                     </div>
@@ -150,7 +150,7 @@ export default function CreateEventPage() {
                                 id="description"
                                 name="description"
                                 rows={4}
-                                className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border"
+                                className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border text-gray-900"
                             />
                         </div>
                     </div>

@@ -9,7 +9,7 @@ export async function registerForEvent(prevState: unknown, formData: FormData) {
     const eventId = formData.get('eventId') as string
 
     const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return { error: 'Unauthorized' }
+    if (!user) return { error: 'Unauthorized', success: false }
 
     // Check if already registered
     const { data: existing } = await supabase
@@ -20,7 +20,7 @@ export async function registerForEvent(prevState: unknown, formData: FormData) {
         .single()
 
     if (existing) {
-        return { error: 'You are already registered for this event.' }
+        return { error: 'You are already registered for this event.', success: false }
     }
 
     const { error } = await supabase
@@ -32,10 +32,10 @@ export async function registerForEvent(prevState: unknown, formData: FormData) {
         })
 
     if (error) {
-        return { error: error.message }
+        return { error: error.message, success: false }
     }
 
     revalidatePath('/dashboard/student')
     revalidatePath(`/dashboard/events/${eventId}`)
-    return { success: true }
+    return { success: true, error: null }
 }

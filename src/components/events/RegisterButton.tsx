@@ -7,7 +7,7 @@ import { Ticket } from 'lucide-react'
 // Match the return type of registerForEvent exactly
 // or ensure registerForEvent handles nulls.
 const initialState = {
-    error: undefined as string | undefined, // Changed from null to undefined to match action
+    error: null as string | null,
     success: false
 }
 
