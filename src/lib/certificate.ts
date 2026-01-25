@@ -40,7 +40,7 @@ export const generateCertificate = (studentName: string, eventTitle: string, dat
         { op: 'l', c: [0, 140] },
         { op: 'l', c: [0, 0] }
     ])
-    doc.fill(gold)
+    doc.fill()
 
     // 2. Middle Gray/White Triangle
     // The angled slice between gold and dark
@@ -62,7 +62,7 @@ export const generateCertificate = (studentName: string, eventTitle: string, dat
         { op: 'l', c: [0, 210] },   // Bottom Left corner
         { op: 'l', c: [0, 120] }
     ])
-    doc.fill(darkNavy)
+    doc.fill()
 
     // Add distinct "cut" effect (White overlay line) to separate shapes if needed
     // But filled shapes should work.
