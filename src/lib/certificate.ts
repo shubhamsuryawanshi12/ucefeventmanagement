@@ -12,143 +12,146 @@ export const generateCertificate = (studentName: string, eventTitle: string, dat
     const height = 210
 
     // Colors
-    const deepBlue = '#1a237e'   // Deep Indigo/Blue
-    const gold = '#ffd700'       // Gold
-    const goldShadow = '#c5a000' // Darker Gold for depth
+    const gold = '#cca43b'       // Muted Gold
+    const darkNavy = '#0f172a'   // Very Dark Blue/Black
+    const lightGray = '#f3f4f6'  // Light background gray
     const textDark = '#1f2937'   // Gray-900
 
     // --- BACKGROUND ---
     doc.setFillColor(255, 255, 255)
     doc.rect(0, 0, width, height, 'F')
 
-    // --- LEFT SIDEBAR DESIGN (Geometric) ---
+    // Subtle Pattern (Optional lines on right side)
+    doc.setDrawColor(245, 245, 245)
+    doc.setLineWidth(0.5)
+    for (let i = 80; i < width; i += 10) {
+        doc.line(i, 0, i, height) // Vertical lines background effect
+    }
 
-    // 1. Main Blue Polygon (Left side)
-    // Coords: (0,0) -> (80,0) -> (50, 210) -> (0, 210)
-    doc.setFillColor(deepBlue)
-    doc.triangle(0, 0, 100, 0, 0, 210, 'F')
-    doc.rect(0, 0, 60, 210, 'F') // Fill logic fix, let's just draw a complex shape
+    // --- GEOMETRIC SHAPES (Left Side) ---
 
-    // Let's draw the Blue Shape utilizing a path or multiple triangles
-    doc.setFillColor(deepBlue)
-    doc.setGState(new (doc as any).GState({ opacity: 1 }))
-    // Left Blue Block covering left 25% but angled
-    doc.lines([[80, 0], [-30, 210], [-50, 0]], 0, 0, [1, 1], 'F', true)
-
-    // Actually, distinct shapes are easier in jsPDF primitive
-    // Big Blue Triangle Top Left
-    doc.setFillColor(deepBlue)
-    doc.path([
-        { op: 'm', c: [0, 0] },
-        { op: 'l', c: [90, 0] }, // Top point
-        { op: 'l', c: [50, 210] }, // Bottom Angle point
-        { op: 'l', c: [0, 210] },
-        { op: 'l', c: [0, 0] }
-    ])
-    doc.fill(deepBlue)
-
-    // Gold Diagonal Strip (The border between blue and white)
+    // 1. Top Left Gold Block
+    // Shape: Rectangle top left (0,0) to (70,0) -> Polygon down to (0,150)
     doc.setFillColor(gold)
     doc.path([
-        { op: 'm', c: [90, 0] },
-        { op: 'l', c: [100, 0] },
-        { op: 'l', c: [60, 210] },
-        { op: 'l', c: [50, 210] },
-        { op: 'l', c: [90, 0] }
+        { op: 'm', c: [0, 0] },
+        { op: 'l', c: [90, 0] },
+        { op: 'l', c: [60, 60] }, // Inner point
+        { op: 'l', c: [0, 140] },
+        { op: 'l', c: [0, 0] }
     ])
     doc.fill(gold)
 
-    // Bottom Left Gold Corner (Triangle)
-    doc.setFillColor(gold)
-    doc.triangle(0, 150, 30, 210, 0, 210, 'F')
+    // 2. Middle Gray/White Triangle
+    // The angled slice between gold and dark
+    doc.setFillColor(230, 230, 230) // Light Gray
+    doc.path([
+        { op: 'm', c: [0, 140] },
+        { op: 'l', c: [60, 60] },
+        { op: 'l', c: [100, 140] },
+        { op: 'l', c: [0, 140] } // Doesnt matter much as it's covered by black below
+    ])
+    // Actually the image has a white/gray cut. Let's simplify:
+
+    // 3. Bottom Left Dark Navy Block
+    // Large dark triangle at bottom left
+    doc.setFillColor(darkNavy)
+    doc.path([
+        { op: 'm', c: [0, 120] },   // Start partly up
+        { op: 'l', c: [120, 210] }, // Bottom point shifted right
+        { op: 'l', c: [0, 210] },   // Bottom Left corner
+        { op: 'l', c: [0, 120] }
+    ])
+    doc.fill(darkNavy)
+
+    // Add distinct "cut" effect (White overlay line) to separate shapes if needed
+    // But filled shapes should work.
 
 
-    // --- BADGE / SEAL (Simulated) ---
-    // Top Left Badge
-    const badgeX = 40
-    const badgeY = 50
-    doc.setFillColor(gold)
+    // --- BADGE (Top Left in Gold Area) ---
+    const badgeX = 50
+    const badgeY = 60
+    // Simplified Badge Circle
+    doc.setFillColor(darkNavy) // Dark center
     doc.circle(badgeX, badgeY, 18, 'F')
-    doc.setFillColor(deepBlue)
-    doc.circle(badgeX, badgeY, 15, 'F')
+    doc.setDrawColor(gold)
+    doc.setLineWidth(1)
+    doc.circle(badgeX, badgeY, 16, 'S') // Gold Ring
+
     doc.setTextColor(gold)
     doc.setFontSize(8)
     doc.setFont("helvetica", "bold")
-    doc.text("BEST", badgeX, badgeY - 2, { align: "center" })
-    doc.text("AWARD", badgeX, badgeY + 4, { align: "center" })
-
-    // Ribbons for Badge
-    doc.setFillColor(gold)
-    doc.triangle(badgeX - 10, badgeY + 15, badgeX - 15, badgeY + 40, badgeX - 5, badgeY + 30, 'F') // Left Ribbon
-    doc.triangle(badgeX + 10, badgeY + 15, badgeX + 15, badgeY + 40, badgeX + 5, badgeY + 30, 'F') // Right Ribbon
+    doc.text("AWARD", badgeX, badgeY, { align: "center" })
+    doc.setFontSize(6)
+    doc.text("2026", badgeX, badgeY + 4, { align: "center" })
 
 
     // --- CONTENT (Right Side) ---
-    const contentX = 160 // Center of right side roughly
+    const contentX = 175 // Shifted right
 
-    // Title: CERTIFICATE
-    doc.setFont("times", "bold")
-    doc.setFontSize(48)
-    doc.setTextColor(deepBlue)
+    // Header: CERTIFICATE
+    doc.setFont("times", "bold") // Serif
+    doc.setFontSize(42)
+    doc.setTextColor(textDark)
     doc.text("CERTIFICATE", contentX, 50, { align: "center" })
 
-    // Subtitle: OF AWARD
-    doc.setFontSize(24)
-    doc.setTextColor(deepBlue)
-    doc.text("OF AWARD", contentX, 62, { align: "center" })
-
-    // "We hereby present..."
-    doc.setFont("helvetica", "normal")
-    doc.setFontSize(12)
-    doc.setTextColor(textDark)
-    doc.text("We hereby present this certificate to", contentX, 85, { align: "center" })
-
-    // Student Name (Simulated Handwritting/Cursive using Italic Serif)
-    doc.setFont("times", "italic")
-    doc.setFontSize(48)
-    doc.setTextColor(textDark)
-    doc.text(studentName, contentX, 110, { align: "center" })
-
-    // Line under name
-    doc.setDrawColor(156, 163, 175) // Gray-400
-    doc.setLineWidth(0.5)
-    doc.line(contentX - 60, 115, contentX + 60, 115)
-
-    // Description Body
-    doc.setFont("helvetica", "normal")
-    doc.setFontSize(11)
-    doc.setTextColor(textDark)
-    const desc = `For his/her exceptional participation and successful completion of the event '${eventTitle}'.` +
-        ` Held on ${new Date(date).toLocaleDateString()}.`
-
-    const splitDesc = doc.splitTextToSize(desc, 140)
-    doc.text(splitDesc, contentX, 135, { align: "center" })
-
-    // --- FOOTER SECTION ---
-
-    // Certificate ID
-    doc.setFontSize(9)
-    doc.setTextColor(156, 163, 175) // Gray - 400
-    doc.text(`ID: ${certificateId}`, 20, 205, { align: "left" }) // Bottom Left on Blue (Need white text?)
-
-    // Move ID to right side bottom for visibility or change color if on blue
-    doc.setTextColor(deepBlue)
-    doc.text(`Certificate ID: ${certificateId}`, 105, 200, { align: "left" }) // Bottom area
-
-
-    // Signature Line
-    const sigY = 180
-    doc.setDrawColor(textDark)
-    doc.line(210, sigY, 270, sigY)
-
-    doc.setFont("times", "italic")
+    // Subheader: OF APPRECIATION
+    doc.setFont("helvetica", "normal") // Sans serif
     doc.setFontSize(14)
-    doc.text("Pr. Organizer", 240, sigY - 5, { align: "center" }) // Mock Signature
+    doc.setTextColor(100, 100, 100) // Lighter gray
+    doc.setCharSpace(3) // Spaced out letters
+    doc.text("OF APPRECIATION", contentX, 60, { align: "center" })
 
+    // Line under header
+    doc.setLineWidth(0.5)
+    doc.setDrawColor(textDark)
+    doc.line(contentX - 40, 65, contentX + 40, 65)
+
+    // "Proudly presented to"
+    doc.setFont("helvetica", "bold")
+    doc.setFontSize(10)
+    doc.setTextColor(textDark)
+    doc.setCharSpace(1)
+    doc.text("PROUDLY PRESENTED TO", contentX, 85, { align: "center" })
+
+    // STUDENT NAME
+    doc.setFont("times", "italic") // Script-like
+    doc.setFontSize(48)
+    doc.setTextColor(gold) // Gold Color
+    doc.setCharSpace(0)
+    doc.text(studentName, contentX, 105, { align: "center" })
+
+    // Body Text
     doc.setFont("helvetica", "normal")
     doc.setFontSize(10)
-    doc.text("Authorized Signature", 240, sigY + 5, { align: "center" })
+    doc.setTextColor(100, 100, 100)
+    const desc = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce dignissim ` +
+        `in the Leaders of the World Competition held ` +
+        `for the event '${eventTitle}'.`
 
+    const splitDesc = doc.splitTextToSize(desc, 130)
+    doc.text(splitDesc, contentX, 125, { align: "center" })
+
+    // --- FOOTER LINES ---
+    const lineY = 170
+
+    // DATE Line
+    doc.setDrawColor(textDark)
+    doc.line(125, lineY, 165, lineY)
+    doc.setFontSize(8)
+    doc.text("DATE", 145, lineY + 5, { align: "center" })
+    doc.setFontSize(10)
+    doc.text(new Date(date).toLocaleDateString(), 145, lineY - 2, { align: "center" })
+
+    // SIGNATURE Line
+    doc.line(205, lineY, 245, lineY)
+    doc.setFontSize(8)
+    doc.text("SIGNATURE", 225, lineY + 5, { align: "center" })
+
+    // ID Bottom Right
+    doc.setFontSize(8)
+    doc.setTextColor(200, 200, 200)
+    doc.text(`ID: ${certificateId}`, 280, 200, { align: "right" })
 
     // Save
     doc.save(`${studentName.replace(/\s+/g, '_')}_Certificate.pdf`)
