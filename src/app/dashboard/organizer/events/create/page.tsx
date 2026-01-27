@@ -10,6 +10,11 @@ const initialState = {
 export default function CreateEventPage() {
     const [state, formAction, isPending] = useActionState(createEvent, initialState)
 
+    // Get current date in ISO format for min attribute (YYYY-MM-DDThh:mm)
+    const now = new Date()
+    now.setMinutes(now.getMinutes() - now.getTimezoneOffset())
+    const minDate = now.toISOString().slice(0, 16)
+
     return (
         <div className="max-w-2xl mx-auto">
             <div className="md:flex md:items-center md:justify-between mb-6">
@@ -90,6 +95,7 @@ export default function CreateEventPage() {
                                 name="start_date"
                                 id="start_date"
                                 required
+                                min={minDate}
                                 className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border text-gray-900"
                             />
                         </div>
@@ -105,6 +111,7 @@ export default function CreateEventPage() {
                                 name="end_date"
                                 id="end_date"
                                 required
+                                min={minDate}
                                 className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md p-2 border text-gray-900"
                             />
                         </div>
